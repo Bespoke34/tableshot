@@ -129,7 +129,7 @@ All 4 output formats (Markdown, CSV, JSON, HTML) available for every extraction.
 
 ## Benchmarks
 
-Tested on 9 PDFs covering bordered tables, multi-table pages, multi-page documents,
+Tested on 10 PDFs covering bordered tables, multi-table pages, multi-page documents,
 special characters, wide tables, and real financial statements.
 
 | Metric | Result |
@@ -138,6 +138,30 @@ special characters, wide tables, and real financial statements.
 | **Speed (bordered tables)** | 4-25ms per extraction |
 | **Speed (3-page financial PDF)** | 182ms |
 | **Output format validity** | 36/36 pass (9 PDFs x 4 formats) |
+
+### Test Data
+
+Generated fixtures (click to view the source PDFs):
+
+| Fixture | Description | Tables | Speed |
+|---------|-------------|--------|-------|
+| [simple_bordered.pdf](tests/fixtures/simple_bordered.pdf) | 4-column sales report with bordered cells (Product, Price, Quantity, Total) | 1 table, 5 rows | 10ms |
+| [multi_table.pdf](tests/fixtures/multi_table.pdf) | Two tables on one page: employee directory (3×3) + budget summary (4×2) | 2 tables, 7 rows | 10ms |
+| [single_row.pdf](tests/fixtures/single_row.pdf) | Minimal table — header + one data row (Key/Value) | 1 table, 2 rows | 4ms |
+| [multi_page.pdf](tests/fixtures/multi_page.pdf) | One table per page across 2 pages (inventory + pricing) | 2 tables, 7 rows | 9ms |
+| [empty_page.pdf](tests/fixtures/empty_page.pdf) | Page 1 has only text (no tables); page 2 has a 2-column table | 1 table, 3 rows | 6ms |
+| [special_chars.pdf](tests/fixtures/special_chars.pdf) | Cells with dollar signs, colons, quotes, ampersands, and HTML angle brackets | 1 table, 5 rows | 6ms |
+| [wide_table.pdf](tests/fixtures/wide_table.pdf) | 8-column landscape table with quarterly data (ID, Name, Q1–Q4, Total, Status) | 1 table, 4 rows | 11ms |
+
+Real-world PDFs (not included in repo due to size/licensing):
+
+| PDF | Description | Tables | Speed |
+|-----|-------------|--------|-------|
+| BlackRock mock | Generated mock of a BlackRock quarterly earnings statement (5 columns) | 1 table, 11 rows | 25ms |
+| Sample Financial Statements | 3-page financial statement with complex visual formatting (155KB) | 3 tables, 75 rows | 182ms |
+| NHM table | Large 56-page document with 55 tables (25MB) | 55 tables, 2321 rows | 5.8s |
+
+Full machine-readable results in [benchmarks/results.json](benchmarks/results.json).
 
 ### vs Other Tools
 
