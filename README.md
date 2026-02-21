@@ -1,13 +1,14 @@
 # TableShot
 
-**Extract tables from PDFs into clean, structured data -- instantly.**
+**The only MCP server for PDF table extraction.** Give any AI assistant the ability to read tables from PDFs -- no other tool does this.
 
 [![PyPI](https://img.shields.io/pypi/v/tableshot)](https://pypi.org/project/tableshot/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Tests](https://img.shields.io/github/actions/workflow/status/Bespoke34/tableshot/ci.yml?label=tests)](https://github.com/Bespoke34/tableshot/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://pypi.org/project/tableshot/)
 
-An MCP server that gives your AI assistant the ability to read PDF tables properly.
+Camelot, Tabula, and Table Transformer are Python libraries -- they require a developer to write code. TableShot is an MCP server: Claude Desktop, Cursor, and Windsurf can use it directly with zero code.
+
 ~33MB install. No model downloads. No API keys. Results in <100ms.
 
 <!-- TODO: Replace with actual demo GIF -->
@@ -15,7 +16,7 @@ An MCP server that gives your AI assistant the ability to read PDF tables proper
 
 ## The Problem
 
-Ask any AI assistant to read a table from a PDF. You get this:
+Ask any AI assistant to read a table from a PDF. It can't -- you get word soup:
 
 ```
 Sales Report Q1 2024 Product Price Quantity Total Widget A $10.00 100
