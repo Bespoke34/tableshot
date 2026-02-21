@@ -141,17 +141,17 @@ special characters, wide tables, and real financial statements.
 
 ### Test Data
 
-Generated fixtures (click to view the source PDFs):
+Generated fixtures — click **Source** to see the input PDF, **Output** to see what TableShot extracts:
 
-| Fixture | Description | Tables | Speed |
-|---------|-------------|--------|-------|
-| [simple_bordered.pdf](tests/fixtures/simple_bordered.pdf) | 4-column sales report with bordered cells (Product, Price, Quantity, Total) | 1 table, 5 rows | 10ms |
-| [multi_table.pdf](tests/fixtures/multi_table.pdf) | Two tables on one page: employee directory (3×3) + budget summary (4×2) | 2 tables, 7 rows | 10ms |
-| [single_row.pdf](tests/fixtures/single_row.pdf) | Minimal table — header + one data row (Key/Value) | 1 table, 2 rows | 4ms |
-| [multi_page.pdf](tests/fixtures/multi_page.pdf) | One table per page across 2 pages (inventory + pricing) | 2 tables, 7 rows | 9ms |
-| [empty_page.pdf](tests/fixtures/empty_page.pdf) | Page 1 has only text (no tables); page 2 has a 2-column table | 1 table, 3 rows | 6ms |
-| [special_chars.pdf](tests/fixtures/special_chars.pdf) | Cells with dollar signs, colons, quotes, ampersands, and HTML angle brackets | 1 table, 5 rows | 6ms |
-| [wide_table.pdf](tests/fixtures/wide_table.pdf) | 8-column landscape table with quarterly data (ID, Name, Q1–Q4, Total, Status) | 1 table, 4 rows | 11ms |
+| Fixture | Description | Source | Output | Speed |
+|---------|-------------|--------|--------|-------|
+| simple_bordered | 4-column sales report (Product, Price, Quantity, Total) | [PDF](tests/fixtures/simple_bordered.pdf) | [Extracted](benchmarks/outputs/simple_bordered.md) | 10ms |
+| multi_table | Two tables on one page: employee directory + budget summary | [PDF](tests/fixtures/multi_table.pdf) | [Extracted](benchmarks/outputs/multi_table.md) | 10ms |
+| single_row | Minimal table — header + one data row | [PDF](tests/fixtures/single_row.pdf) | [Extracted](benchmarks/outputs/single_row.md) | 4ms |
+| multi_page | One table per page across 2 pages | [PDF](tests/fixtures/multi_page.pdf) | [Extracted](benchmarks/outputs/multi_page.md) | 9ms |
+| empty_page | Page 1 text only; page 2 has a table | [PDF](tests/fixtures/empty_page.pdf) | [Extracted](benchmarks/outputs/empty_page.md) | 6ms |
+| special_chars | Cells with `$`, `:`, `"`, `&`, `<>` | [PDF](tests/fixtures/special_chars.pdf) | [Extracted](benchmarks/outputs/special_chars.md) | 6ms |
+| wide_table | 8-column landscape table (Q1–Q4, Total, Status) | [PDF](tests/fixtures/wide_table.pdf) | [Extracted](benchmarks/outputs/wide_table.md) | 11ms |
 
 Real-world PDFs (not included in repo due to size/licensing):
 
@@ -161,7 +161,7 @@ Real-world PDFs (not included in repo due to size/licensing):
 | Sample Financial Statements | 3-page financial statement with complex visual formatting (155KB) | 3 tables, 75 rows | 182ms |
 | NHM table | Large 56-page document with 55 tables (25MB) | 55 tables, 2321 rows | 5.8s |
 
-Full machine-readable results in [benchmarks/results.json](benchmarks/results.json).
+Full machine-readable results in [benchmarks/results.json](benchmarks/results.json). Detailed before/after comparisons in [benchmarks/results.md](benchmarks/results.md).
 
 ### vs Other Tools
 
