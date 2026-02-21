@@ -73,7 +73,7 @@ python -m tableshot    # same thing
 ### `extract_tables`
 
 ```
-source: str           # File path or URL to a PDF
+source: str           # File path or URL to a PDF (or image with [ml] extra)
 pages: str = "all"    # "all", "1", "1-3", "1,3,5"
 format: str = "markdown"  # "markdown", "csv", "json", "html"
 ```
@@ -163,19 +163,28 @@ pip install tableshot[ocr]    # OCR for scanned documents (ONNX, no PyTorch)
 pip install tableshot[all]    # Everything
 ```
 
+With `[ml]` installed, TableShot automatically detects whether a PDF has a text layer:
+- **Text layer present** -- uses pdfplumber (fast, ~10ms)
+- **Scanned / no text layer** -- uses Table Transformer for detection, pdfplumber for text extraction
+- **Image files** (PNG, JPEG) -- uses Table Transformer + OCR (requires `[ocr]`)
+
+You can also force the ML backend: `extract_tables("/path/to/scan.pdf", backend="ml")`
+
 ## How It Works
 
 ```
-PDF file ──> pdfplumber ──> Table Detection ──> Cell Extraction ──> Formatted Output
-                              |                                        |
-                              |  1. Try line-based (bordered)          |  Markdown
-                              |  2. Fallback: text-based (borderless)  |  CSV
-                              |  3. Clean cells, pad ragged rows       |  JSON
-                              |                                        |  HTML
+PDF/Image ──> Smart Router ──> Table Detection ──> Cell Extraction ──> Formatted Output
+                  |                                                        |
+                  |  PDF with text layer:                                  |  Markdown
+                  |    pdfplumber (lines → text fallback)                  |  CSV
+                  |                                                        |  JSON
+                  |  Scanned PDF / Image (with [ml]):                      |  HTML
+                  |    Table Transformer → pdfplumber text / OCR           |
 ```
 
 - **pdfplumber** handles PDF parsing and table detection (MIT)
-- **pypdfium2** provides PDF rendering for future image support (Apache-2.0)
+- **pypdfium2** renders PDF pages to images for ML backend (Apache-2.0)
+- **Table Transformer** (optional `[ml]`) detects tables in images (MIT)
 - **MCP SDK** exposes tools to AI assistants via stdio transport (MIT)
 
 Total base install: ~33MB. No model downloads. No GPU required.
@@ -199,7 +208,8 @@ cd tableshot
 pip install -e ".[dev]"
 pip install fpdf2                 # for generating test fixtures
 python tests/generate_fixtures.py # create test PDFs
-pytest                            # run 136 tests
+pytest -m "not slow"              # run 160 tests (skip ML tests)
+pytest                            # run all 167 tests (needs [ml] extra)
 ruff check src/ tests/            # lint
 ```
 
