@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tableshot"
-version = "0.1.0"
+version = "0.1.1"
 description = "Extract tables from PDFs into clean, structured data -- instantly. An MCP server for AI assistants."
 readme = "README.md"
 license = { text = "MIT" }

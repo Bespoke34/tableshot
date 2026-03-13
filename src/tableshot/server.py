@@ -2,35 +2,47 @@
 
 from __future__ import annotations
 
+from typing import Annotated, Literal
+
+from pydantic import Field
 from mcp.server.fastmcp import FastMCP
 
 from tableshot.pipeline import run_extraction, run_list
 
 mcp = FastMCP(
     "TableShot",
-    instructions="Extract tables from PDFs into clean Markdown, CSV, JSON, or HTML.",
+    instructions=(
+        "TableShot extracts tables from PDF documents into clean, structured data. "
+        "Use when the user needs to read, parse, or extract tabular data from any PDF "
+        "— financial reports, invoices, research papers, bank statements, regulatory "
+        "filings, spreadsheets saved as PDF, or any document with rows and columns. "
+        "Outputs Markdown, CSV, JSON, or HTML. No API keys or configuration required."
+    ),
 )
 
 
 @mcp.tool()
 async def extract_tables(
-    source: str,
-    pages: str = "all",
-    format: str = "markdown",
+    source: Annotated[str, Field(
+        description="Absolute file path to a PDF document (e.g. '/home/user/report.pdf')."
+    )],
+    pages: Annotated[str, Field(
+        default="all",
+        description='Pages to scan. "all" for every page, "1" for a single page, "1-3" for a range, or "1,3,5" for specific pages.',
+    )],
+    format: Annotated[Literal["markdown", "csv", "json", "html"], Field(
+        default="markdown",
+        description="Output format for the extracted tables.",
+    )] = "markdown",
 ) -> str:
-    """Extract all tables from a PDF into structured data.
+    """Extract tables from a PDF and return them as structured data.
 
-    Returns tables as clean Markdown, CSV, JSON, or HTML.
-    Automatically detects table boundaries — no coordinates needed.
+    Use when the user asks to read, parse, pull, or extract a table from a PDF.
+    Detects table boundaries automatically — no coordinates or configuration needed.
+    Preserves row/column structure, headers, and cell alignment.
 
-    Args:
-        source: File path to a PDF document.
-        pages: Which pages to scan. "all", "1", "1-3", or "1,3,5".
-        format: Output format — "markdown", "csv", "json", or "html".
-
-    Examples:
-        extract_tables("/path/to/report.pdf")
-        extract_tables("/path/to/report.pdf", pages="1-3", format="csv")
+    Returns formatted tables with page number, dimensions, and processing time.
+    Returns a message if no tables are found.
     """
     try:
         result = run_extraction(source, pages=pages, fmt=format)
@@ -58,17 +70,18 @@ async def extract_tables(
 
 @mcp.tool()
 async def list_tables(
-    source: str,
-    pages: str = "all",
+    source: Annotated[str, Field(
+        description="Absolute file path to a PDF document (e.g. '/home/user/report.pdf')."
+    )],
+    pages: Annotated[str, Field(
+        default="all",
+        description='Pages to scan. "all" for every page, "1" for a single page, "1-3" for a range, or "1,3,5" for specific pages.',
+    )],
 ) -> str:
-    """Quickly scan a document and list all detected tables.
+    """Scan a PDF and list all detected tables without extracting full content.
 
-    Shows page numbers, row/column counts, and a preview of headers.
-    Use this before extract_tables to see what's available.
-
-    Args:
-        source: File path to a PDF document.
-        pages: Which pages to scan. "all", "1", "1-3", or "1,3,5".
+    Use before extract_tables to preview what tables exist in a document.
+    Returns page number, row/column count, column headers, and a first-row preview for each table.
     """
     try:
         result = run_list(source, pages=pages)
