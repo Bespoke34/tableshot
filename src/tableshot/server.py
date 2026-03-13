@@ -29,7 +29,7 @@ async def extract_tables(
     pages: Annotated[str, Field(
         default="all",
         description='Pages to scan. "all" for every page, "1" for a single page, "1-3" for a range, or "1,3,5" for specific pages.',
-    )],
+    )] = "all",
     format: Annotated[Literal["markdown", "csv", "json", "html"], Field(
         default="markdown",
         description="Output format for the extracted tables.",
@@ -76,7 +76,7 @@ async def list_tables(
     pages: Annotated[str, Field(
         default="all",
         description='Pages to scan. "all" for every page, "1" for a single page, "1-3" for a range, or "1,3,5" for specific pages.',
-    )],
+    )] = "all",
 ) -> str:
     """Scan a PDF and list all detected tables without extracting full content.
 
